@@ -36,6 +36,10 @@ public class PlayerController : MonoBehaviour
 	    {
 	        Gun.Shoot();
 	    }
+        else if (Input.GetButton("Shoot"))
+	    {
+	        Gun.ShootContiniously();
+	    }
 	}
 
     void ControlMouse()
