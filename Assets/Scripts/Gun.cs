@@ -13,7 +13,9 @@ public class Gun : MonoBehaviour
     public GunType gunType;
     public float rpm;
 
+    //Components
     public Transform Spawn;
+    private LineRenderer _tracer;
 
     private Ray _ray;
     private RaycastHit _hit;
@@ -29,6 +31,10 @@ public class Gun : MonoBehaviour
     {
         _secondsBetweenShots = 60/rpm;
         _shotSound = GetComponent<AudioSource>();
+        if (GetComponent<LineRenderer>())
+        {
+            _tracer = GetComponent<LineRenderer>();
+        }
     }
 
     public void Shoot()
@@ -41,11 +47,14 @@ public class Gun : MonoBehaviour
             {
                 _shotDistance = _hit.distance;
             }
-            //Debug.DrawRay(_ray.origin, _ray.direction * _shotDistance, Color.red, 1, true);
-            print("Pew!");
 
             _nextPossibleShootTime = Time.time + _secondsBetweenShots;
             _shotSound.Play();
+
+            if (_tracer)
+            {
+                StartCoroutine("RenderTracer", _ray.direction * _shotDistance);
+            }
         }
     }
 
@@ -66,5 +75,14 @@ public class Gun : MonoBehaviour
             _canShoot = false;
         }
         return _canShoot;
+    }
+
+    IEnumerator RenderTracer(Vector3 hitPoint)
+    {
+        _tracer.enabled = true;
+        _tracer.SetPosition(0,Spawn.position);
+        _tracer.SetPosition(1, Spawn.position + hitPoint);
+        yield return null;
+        _tracer.enabled = false;
     }
 }
