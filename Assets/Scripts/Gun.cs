@@ -15,6 +15,8 @@ public class Gun : MonoBehaviour
 
     //Components
     public Transform Spawn;
+    public Transform ShellEjectionPoint;
+    public Rigidbody Shell;
     private LineRenderer _tracer;
 
     private Ray _ray;
@@ -55,6 +57,9 @@ public class Gun : MonoBehaviour
             {
                 StartCoroutine("RenderTracer", _ray.direction * _shotDistance);
             }
+
+            Rigidbody newShell = Instantiate(Shell, ShellEjectionPoint.position,Quaternion.identity) as Rigidbody;
+            newShell.AddForce(ShellEjectionPoint.forward * Random.Range(150f,200f) + Spawn.forward * Random.Range(-10f,10f));
         }
     }
 
