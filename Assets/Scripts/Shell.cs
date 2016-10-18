@@ -12,11 +12,8 @@ public class Shell : MonoBehaviour
 
     IEnumerator ShellFade()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(1f);
-            Destroy(gameObject);
-        }
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
     }
 
     void OnTriggerEnter(Collider c)
